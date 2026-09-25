@@ -1,0 +1,11 @@
+{
+  "name": "simple-vitest",
+  "private": true,
+  "type": "module",
+  "devDependencies": {
+    "vitest": "^3.2.4"
+  },
+  "scripts": {
+    "test": "vitest run"
+  }
+}

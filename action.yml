@@ -1,0 +1,31 @@
+name: jev-test-impact
+description: Run only the tests that matter. Test impact analysis powered by Jev.
+inputs:
+  typesafe-api-key:
+    description: TypeSafe System One API key
+    required: false
+  base:
+    description: Git base ref
+    required: false
+  mode:
+    description: safe, balanced, or aggressive
+    default: safe
+  threshold:
+    description: Optional score threshold
+    required: false
+  select-only:
+    description: Select without running tests
+    default: "false"
+  fail-on-api-error:
+    description: Fail instead of using the safe fallback
+    default: "false"
+outputs:
+  selected-count: { description: Number of selected test files }
+  discovered-count: { description: Number of discovered test files }
+  candidate-count: { description: Number of candidate test files }
+  reduction-percent: { description: Percent of test files skipped }
+  selection-ms: { description: Selection latency in milliseconds }
+  selected-tests: { description: JSON array of selected test paths }
+runs:
+  using: node24
+  main: dist/action/index.js
