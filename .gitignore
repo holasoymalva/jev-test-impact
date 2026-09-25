@@ -1,5 +1,7 @@
 node_modules/
-dist/
+dist/*
+!dist/action/
+!dist/action/**
 coverage/
 .jev-test-impact-cache/
 fixtures/generated-demo/

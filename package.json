@@ -1,15 +1,32 @@
 {
   "name": "jev-test-impact",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Run only the tests that matter. Test impact analysis powered by Jev.",
   "type": "module",
+  "author": "holasoymalva",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/holasoymalva/jev-test-impact.git"
+  },
+  "homepage": "https://github.com/holasoymalva/jev-test-impact#readme",
+  "bugs": {
+    "url": "https://github.com/holasoymalva/jev-test-impact/issues"
+  },
+  "keywords": [
+    "test-impact-analysis",
+    "github-actions",
+    "vitest",
+    "jest",
+    "testing",
+    "ci"
+  ],
   "engines": {
     "node": ">=22"
   },
   "bin": {
-    "jev-test-impact": "./dist/cli/index.js",
-    "jti": "./dist/cli/index.js"
+    "jev-test-impact": "dist/cli/index.js",
+    "jti": "dist/cli/index.js"
   },
   "exports": {
     ".": {

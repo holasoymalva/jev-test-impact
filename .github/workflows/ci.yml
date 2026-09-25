@@ -22,4 +22,11 @@ jobs:
       - run: pnpm typecheck
       - run: pnpm test
       - run: pnpm build
-      - run: git diff --exit-code -- dist/
+      - name: Verify Action bundle is committed
+        run: |
+          git diff --exit-code -- dist/action/
+          test -z "$(git status --porcelain --untracked-files=all -- dist/action/)"
+      - name: Smoke test local Action
+        uses: ./
+        with:
+          select-only: "true"

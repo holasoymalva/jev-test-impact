@@ -19,8 +19,20 @@ Run selected Vitest / Jest files
 ```
 
 ```bash
-pnpm add -D jev-test-impact
+npm install -D jev-test-impact
+```
 
+Or using your favorite package manager:
+
+```bash
+pnpm add -D jev-test-impact
+yarn add -D jev-test-impact
+bun add -D jev-test-impact
+```
+
+Run impacted tests:
+
+```bash
 TYPESAFE_API_KEY=... npx jev-test-impact
 ```
 
@@ -31,6 +43,9 @@ jti --static
 ```
 
 uses the local dependency graph without sending anything over the network.
+
+- **npm**: [npmjs.com/package/jev-test-impact](https://www.npmjs.com/package/jev-test-impact)
+- **GitHub**: [github.com/holasoymalva/jev-test-impact](https://github.com/holasoymalva/jev-test-impact)
 
 ---
 
@@ -201,7 +216,7 @@ export default defineConfig({
 
 ## GitHub Action
 
-Use `jev-test-impact` directly in pull requests:
+Use `jev-test-impact` directly in pull requests without installing any CLI package:
 
 ```yaml
 name: Test Impact
@@ -225,23 +240,40 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      - uses: your-org/jev-test-impact@v1
+      - uses: holasoymalva/jev-test-impact@v0.1.2
         with:
           typesafe-api-key: ${{ secrets.TYPESAFE_API_KEY }}
 ```
 
-The action reports:
+> **Note:**
+> - `fetch-depth: 0` is required so Git can accurately resolve merge bases and commit diffs.
+> - The Action executes the test runner (Vitest or Jest) already installed in your repository.
+> - Providing `typesafe-api-key` activates Jev AI impact analysis; if omitted, the Action gracefully falls back to deterministic static graph selection.
+> - Do not use `pull_request_target` to execute untrusted pull-request code.
 
-```text
-tests discovered
-candidates
-tests selected
-reduction
-selection latency
-selected paths
-```
+### Action Inputs
 
-and writes a GitHub Job Summary.
+| Input | Required | Default | Description |
+| --- | --- | --- | --- |
+| `typesafe-api-key` | No | none | TypeSafe System One API key used by Jev. |
+| `base` | No | automatic | Git base ref used for change detection. |
+| `mode` | No | `safe` | Selection mode: `safe`, `balanced`, or `aggressive`. |
+| `threshold` | No | mode default | Optional score threshold override. |
+| `select-only` | No | `false` | Select tests without running them. |
+| `fail-on-api-error` | No | `false` | Fail instead of applying the safe API fallback. |
+
+### Action Outputs
+
+| Output | Description |
+| --- | --- |
+| `selected-count` | Number of selected test files. |
+| `discovered-count` | Number of discovered test files. |
+| `candidate-count` | Number of candidate test files. |
+| `reduction-percent` | Percentage of discovered tests not selected. |
+| `selection-ms` | Selection latency in milliseconds. |
+| `selected-tests` | JSON array of selected test paths. |
+
+The Action automatically writes a rich breakdown table directly to `$GITHUB_STEP_SUMMARY`.
 
 ---
 

@@ -1,5 +1,9 @@
 name: jev-test-impact
 description: Run only the tests that matter. Test impact analysis powered by Jev.
+author: holasoymalva
+branding:
+  icon: zap
+  color: yellow
 inputs:
   typesafe-api-key:
     description: TypeSafe System One API key
