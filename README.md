@@ -240,7 +240,7 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      - uses: holasoymalva/jev-test-impact@v0.1.2
+      - uses: holasoymalva/jev-test-impact@v0.1.3
         with:
           typesafe-api-key: ${{ secrets.TYPESAFE_API_KEY }}
 ```
