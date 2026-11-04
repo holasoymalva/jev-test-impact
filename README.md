@@ -298,7 +298,10 @@ Unknown IDs are discarded.
 
 Every selected test path is resolved inside the repository before execution.
 
-If Jev is unavailable, the default behavior is:
+If Jev is unavailable or returns incomplete or invalid scores, the configured
+fallback applies. Every semantic candidate must have exactly one finite score
+between 0 and 1; a complete response of zero scores is still valid. The default
+behavior is:
 
 ```text
 run all static candidates

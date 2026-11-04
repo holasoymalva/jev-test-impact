@@ -99,14 +99,30 @@ export async function selectImpactedTestsInternal(
     );
   else {
     try {
+      const decisions = await options.engine.scoreTests({
+        changeSet,
+        candidates: semantic,
+        ...(options.signal ? { signal: options.signal } : {}),
+      });
+      const expectedIds = new Set(semantic.map((candidate) => candidate.id));
+      if (
+        decisions.length !== expectedIds.size ||
+        new Set(decisions.map((decision) => decision.id)).size !==
+          expectedIds.size ||
+        decisions.some(
+          (decision) =>
+            !expectedIds.has(decision.id) ||
+            !Number.isFinite(decision.score) ||
+            decision.score < 0 ||
+            decision.score > 1,
+        )
+      ) {
+        throw new Error(
+          "Decision engine must return one finite score per candidate",
+        );
+      }
       scores = new Map(
-        (
-          await options.engine.scoreTests({
-            changeSet,
-            candidates: semantic,
-            ...(options.signal ? { signal: options.signal } : {}),
-          })
-        ).map((score) => [score.id, score.score]),
+        decisions.map((decision) => [decision.id, decision.score]),
       );
     } catch (error) {
       if (options.config.fallback === "error") throw error;
